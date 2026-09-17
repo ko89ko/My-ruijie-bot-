@@ -437,7 +437,15 @@ async def Code_Expires_Date(sess, session_id):
             result = respond.get('result', {}) or {}
             profile_name = result.get('profileName', 'Unknown')
             totaltime = Minute_to_Hour(result.get('totalMinutes', 'Unknown'))
-            return f"📋 Plan: {profile_name} | ⏳ Time: {totaltime}"
+            
+            # Data (GB) ရှာဖွေခြင်း
+            data_limit_bytes = result.get('dataLimit') 
+            data_str = ""
+            if data_limit_bytes:
+                gb = data_limit_bytes / (1024**3) # Bytes ကို GB ပြောင်း
+                data_str = f" | 💾 Data: {gb:.2f}GB"
+            
+            return f"📋 Plan: {profile_name}{data_str} | ⏳ Time: {totaltime}"
     except Exception:
         return "📋 Plan: Unknown | ⏳ Time: Unknown"
 
